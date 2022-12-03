@@ -1,0 +1,32 @@
+{
+  "name": "ngx-chart3",
+  "version": "1.0.1",
+  "description": "Angular liibrary for build line and scatter plot chart",
+  "author": "velllll",
+  "license": "MIT",
+  "keywords": [
+    "ng",
+    "angular",
+    "angular2",
+    "chart",
+    "line chart",
+    "scatter chart",
+    "zoom chart",
+    "zoom",
+    "d3"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Velllll/ngx-chart3.git"
+  },
+  "peerDependencies": {
+    "@angular/common": "^14.0.0 || ^15.0.0",
+    "@angular/core": "^14.0.0 || ^15.0.0",
+    "@types/d3": "^7.4.0",
+    "d3": "^7.6.1"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
+  "typings": "index.d.ts"
+}
