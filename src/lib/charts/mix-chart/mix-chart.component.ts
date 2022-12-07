@@ -1,30 +1,31 @@
 import { AfterViewInit, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { GuardsService } from '../services/type-guards.service';
-import { ChartSettingsService } from '../services/chart-settings.service';
-import { ChartUtilsService } from '../services/chart-utils.service';
-import { ChartSetupService } from '../services/chart-setup.service';
-import { ChartRenderService } from '../services/chart-render.service';
-import { ILine, IDot } from '../interfaces/chart-data.interface';
-import { IMargins, IAxisName } from '../interfaces/chart-settings.interface';
+import { GuardsService } from './services/type-guards.service';
+import { ChartSettingsService } from './services/chart-settings.service';
+import { ChartUtilsService } from './services/chart-utils.service';
+import { ChartSetupService } from './services/chart-setup.service';
+import { Margins, AxisName } from './interfaces/chart-settings.interface';
+import { RenderEmptyChart } from './services/render/render-empty-chart.service';
+import { RenderDataService } from './services/render/render-data.service';
+import { Dot, Line } from './interfaces/lines-and-dots-data.interface';
 
 @Component({
-  selector: 'ngx-chart3',
-  templateUrl: './ng-chart.component.html',
-  styleUrls: ['./ng-chart.component.scss'],
-  providers: [GuardsService, ChartSettingsService, ChartUtilsService, ChartSetupService, ChartRenderService],
+  selector: 'chart3-mix',
+  templateUrl: './mix-chart.component.html',
+  styleUrls: ['./mix-chart.component.scss'],
+  providers: [GuardsService, ChartSettingsService, ChartUtilsService, ChartSetupService, RenderDataService, RenderEmptyChart],
 })
-export class NgChartComponent implements OnChanges, AfterViewInit {
-  @Input('chartData') chartData: (ILine | IDot)[] = []
+export class Chart3MixComponent implements OnChanges, AfterViewInit {
+  @Input('chartData') chartData: (Line | Dot)[] = []
   @Input('svgId') svgId: string = this.getRandomId(10)
   @Input('fontSize') fontSize: number = 15
   @Input('width') width: number = 600
   @Input('height') height: number = 400
-  @Input('margins') margins: IMargins = {left: 40, right: 30, bottom: 30, top: 30}
+  @Input('margins') margins: Margins = {left: 40, right: 30, bottom: 30, top: 30}
   @Input('range') range: {x: number[], y: number[]} = {x: [], y: []}
   @Input('selectRange') selectRange: boolean = false
   @Input('zoom') zoom: boolean = false
   @Input('cursor') cursor: boolean = false
-  @Input('axisName') axisName: IAxisName = {x: '', y: ''}
+  @Input('axisName') axisName: AxisName = {x: '', y: ''}
   @Input('gridSize') gridSize: number = 5
 
   constructor(

@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Subject } from "rxjs";
-import { ILine, IDot } from "../interfaces/chart-data.interface";
-import { IMargins, IAxisName } from "../interfaces/chart-settings.interface";
+import { Line, Dot } from "../interfaces/lines-and-dots-data.interface";
+import { Margins, AxisName } from "../interfaces/chart-settings.interface";
 import * as d3 from 'd3'
 
 @Injectable()
@@ -10,18 +10,18 @@ export class ChartSettingsService {
     svg!: d3.Selection<d3.BaseType, unknown, HTMLElement, any>
 
     settings!: {
-      chartData: (ILine | IDot)[];
+      chartData: (Line | Dot)[];
       svgId: string;
       fontSize: number;
       width: number;
       height: number;
-      margins: IMargins;
+      margins: Margins;
       range: {x: number[]; y: number[]},
       selectRange: boolean;
       zoom: boolean;
       cursor: boolean;
       lineHandlers: boolean;
-      axisName: IAxisName;
+      axisName: AxisName;
       gridSize: number
     }
   

@@ -1,15 +1,55 @@
 import { Injectable } from "@angular/core";
-import { ChartSettingsService } from "./chart-settings.service";
-import { ChartUtilsService } from "./chart-utils.service";
 import * as d3 from "d3";
+import { ChartSettingsService } from "../chart-settings.service";
+import { ChartUtilsService } from "../chart-utils.service";
 
-@Injectable()
-export class ChartRenderService {
-
-    constructor(
-        private chartSettings: ChartSettingsService,
-        private chartUtils: ChartUtilsService
-    ) {}
+@Injectable() 
+export class RenderEmptyChart {
+  constructor(
+    private chartSettings: ChartSettingsService,
+    private chartUtils: ChartUtilsService
+  ) {}
+  
+    renderAxis() {
+        const xAndYOption = this.chartUtils.getdomainXandY()
+    
+        const inner_width = this.chartSettings.settings.width - this.chartSettings.settings.margins.left - this.chartSettings.settings.margins.right
+        const inner_height = this.chartSettings.settings.height - this.chartSettings.settings.margins.top - this.chartSettings.settings.margins.bottom
+    
+        //axis
+        const xAxis = d3.axisBottom(xAndYOption.x).ticks(this.chartSettings.settings.gridSize);
+        const yAxis = d3.axisLeft(xAndYOption.y).ticks(this.chartSettings.settings.gridSize);
+    
+        //grid
+        const xGrid = d3.axisBottom(xAndYOption.x).tickSize(-inner_height).tickFormat(() => '').ticks(this.chartSettings.settings.gridSize)
+        const yGrid = d3.axisLeft(xAndYOption.y).tickSize(-inner_width).tickFormat(() => '').ticks(this.chartSettings.settings.gridSize)
+    
+        //render axis
+        this.chartSettings.axisX = this.chartSettings.svg.selectAll('g.axis').append('g')
+        .attr('class', 'x-axis')
+        .attr('transform', `translate(0, ${this.chartSettings.settings.height - this.chartSettings.settings.margins.bottom})`)
+        .call(xAxis)
+        .style('font-size', this.chartSettings.settings.fontSize)
+    
+        this.chartSettings.axisY = this.chartSettings.svg.selectAll('g.axis').append('g')
+        .attr('class', 'y-axis')
+        .attr('transform', `translate(${this.chartSettings.settings.margins.left}, 0)`)
+        .call(yAxis)
+        .style('font-size', this.chartSettings.settings.fontSize)
+    
+        //render grid
+        this.chartSettings.gridX = this.chartSettings.svg.selectAll('g.axis').append('g')
+        .attr('class', 'x grid')
+        .attr('transform', `translate(0, ${this.chartSettings.settings.height - this.chartSettings.settings.margins.bottom})`)
+        .style('opacity', '0.3')
+        .call(xGrid)
+    
+        this.chartSettings.gridY = this.chartSettings.svg.selectAll('g.axis').append('g')
+        .attr('class', 'y grid')
+        .attr('transform', `translate(${this.chartSettings.settings.margins.left}, 0)`)
+        .style('opacity', '0.3')
+        .call(yGrid)
+    }
 
     renderAxisName() {
         const fontSize = 20
@@ -67,7 +107,7 @@ export class ChartRenderService {
         .attr('y1', d => d.y)
         .attr('y2', d => d.y)
         .attr('stroke', 'black')
-        .attr('stroke-width', 2)
+        .attr('stroke-width', 1)
     
         //render vertical line
         this.chartSettings.svg.selectAll('g.cursor')
@@ -80,7 +120,7 @@ export class ChartRenderService {
         .attr('y1', d => d.y - this.chartSettings.settings.height)
         .attr('y2', d => d.y + this.chartSettings.settings.height)
         .attr('stroke', 'black')
-        .attr('stroke-width', 2)
+        .attr('stroke-width', 1)
     }
     
     renderCursorPosition(x: number, y: number) {
@@ -121,82 +161,17 @@ export class ChartRenderService {
         this.chartSettings.svg.append('g')
           .attr('class', 'dots')
           .attr("clip-path", `url(#clip-${this.chartSettings.settings.svgId})`)
-      
-        this.chartSettings.svg.append('g')
+
+        if(this.chartSettings.settings.cursor) {
+          this.chartSettings.svg.append('g')
           .attr('class', 'cursor')
           .attr("clip-path", `url(#clip-${this.chartSettings.settings.svgId})`)
+        }
     
-        this.chartSettings.svg.append('g')
+        if(this.chartSettings.settings.zoom) {
+          this.chartSettings.svg.append('g')
           .attr('class', 'zoom')
           .attr("clip-path", `url(#clip-${this.chartSettings.settings.svgId})`)
-    }
-      
-    renderAxis() {
-        const xAndYOption = this.chartUtils.getdomainXandY()
-    
-        const inner_width = this.chartSettings.settings.width - this.chartSettings.settings.margins.left - this.chartSettings.settings.margins.right
-        const inner_height = this.chartSettings.settings.height - this.chartSettings.settings.margins.top - this.chartSettings.settings.margins.bottom
-    
-        //axis
-        const xAxis = d3.axisBottom(xAndYOption.x).ticks(this.chartSettings.settings.gridSize);
-        const yAxis = d3.axisLeft(xAndYOption.y).ticks(this.chartSettings.settings.gridSize);
-    
-        //grid
-        const xGrid = d3.axisBottom(xAndYOption.x).tickSize(-inner_height).tickFormat(() => '').ticks(this.chartSettings.settings.gridSize)
-        const yGrid = d3.axisLeft(xAndYOption.y).tickSize(-inner_width).tickFormat(() => '').ticks(this.chartSettings.settings.gridSize)
-    
-        //render axis
-        this.chartSettings.axisX = this.chartSettings.svg.selectAll('g.axis').append('g')
-        .attr('class', 'x-axis')
-        .attr('transform', `translate(0, ${this.chartSettings.settings.height - this.chartSettings.settings.margins.bottom})`)
-        .call(xAxis)
-        .style('font-size', this.chartSettings.settings.fontSize)
-    
-        this.chartSettings.axisY = this.chartSettings.svg.selectAll('g.axis').append('g')
-        .attr('class', 'y-axis')
-        .attr('transform', `translate(${this.chartSettings.settings.margins.left}, 0)`)
-        .call(yAxis)
-        .style('font-size', this.chartSettings.settings.fontSize)
-    
-        //render grid
-        this.chartSettings.gridX = this.chartSettings.svg.selectAll('g.axis').append('g')
-        .attr('class', 'x grid')
-        .attr('transform', `translate(0, ${this.chartSettings.settings.height - this.chartSettings.settings.margins.bottom})`)
-        .style('opacity', '0.3')
-        .call(xGrid)
-    
-        this.chartSettings.gridY = this.chartSettings.svg.selectAll('g.axis').append('g')
-        .attr('class', 'y grid')
-        .attr('transform', `translate(${this.chartSettings.settings.margins.left}, 0)`)
-        .style('opacity', '0.3')
-        .call(yGrid)
-    }
-    
-    renderData() {
-        const {dataLine, dataDot} = this.chartUtils.sortedData()
-        //render all lines
-        this.chartSettings.svg.selectAll('g.lines')
-          .selectAll('path')
-          .data(dataLine)
-          .join('path')
-          .attr('class', d => d.lineName)
-          .attr('d', d => d3.line()(d.data))
-          .attr('fill', 'none')
-          .attr('stroke', d => d.color !== undefined ? d.color : this.chartSettings.defaultSettingsForLine.color)
-          .attr('stroke-width', d => {
-            return d.strokeWidth !== undefined ? d.strokeWidth : this.chartSettings.defaultSettingsForLine.strokeWidth
-          })
-          .style('stroke-opacity', d => d.opacity !== undefined ? d.opacity : this.chartSettings.defaultSettingsForLine.opacity)
-        //render all dots
-        this.chartSettings.svg.selectAll('g.dots')
-          .selectAll('circle')
-          .data(dataDot)
-          .join('circle')
-          .attr('class', d => d.dotName)
-          .attr('cx', d => d.x)
-          .attr('cy', d => d.y)
-          .attr('fill', d => d.color !== undefined ? d.color : this.chartSettings.defaultSettingsForDot.color)
-          .attr('fill-opacity', d => d.opacity !== undefined ? d.opacity : this.chartSettings.defaultSettingsForDot.opacity)
-          .attr('r', d => d.radious !== undefined ? d.radious : this.chartSettings.defaultSettingsForDot.radious)
+        }
     }
 }

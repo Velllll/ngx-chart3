@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NgChartComponent } from './ng-chart/ng-chart.component';
+import { Chart3MixComponent } from './charts/mix-chart/mix-chart.component';
 
 @NgModule({
   declarations: [
-    NgChartComponent
+    Chart3MixComponent,
   ],
   imports: [
     CommonModule,
   ],
   exports: [
-    NgChartComponent
+    Chart3MixComponent
   ]
 })
 export class NgxChart3Module { }

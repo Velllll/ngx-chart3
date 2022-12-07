@@ -1,18 +1,20 @@
 import { Injectable } from "@angular/core";
-import { ChartRenderService } from "./chart-render.service";
 import { ChartSettingsService } from "./chart-settings.service";
 import { ChartUtilsService } from "./chart-utils.service";
 import * as d3 from "d3";
-import { ILine, IDot } from "../interfaces/chart-data.interface";
-import { IChartSettings } from "../interfaces/chart-settings.interface";
+import { Line, Dot } from "../interfaces/lines-and-dots-data.interface";
+import { ChartSettings } from "../interfaces/chart-settings.interface";
+import { RenderEmptyChart } from "./render/render-empty-chart.service";
+import { RenderDataService } from "./render/render-data.service";
 
 @Injectable()
 export class ChartSetupService {
 
     constructor(
-        private chartSettings: ChartSettingsService,
-        private chartRender: ChartRenderService,
-        private chartUtils: ChartUtilsService,
+      private chartSettings: ChartSettingsService,
+      private chartUtils: ChartUtilsService,
+      private rEmptyChart: RenderEmptyChart,
+      private rDataLinesDots: RenderDataService
     ) {}
 
     setChart(
@@ -30,7 +32,7 @@ export class ChartSetupService {
         lineHandlers = true, 
         axisName = {x: '', y: ''},
         gridSize = 6
-      }: IChartSettings
+      }: ChartSettings
     ) {
       this.chartSettings.settings = {
         chartData,
@@ -55,17 +57,17 @@ export class ChartSetupService {
         this.chartSettings.selectedRangeX = this.chartSettings.settings.range.x
         this.chartSettings.selectedRangeY = this.chartSettings.settings.range.y
     
-        this.chartRender.renderSvg()
-        this.chartRender.renderGContainers()
-        this.chartRender.renderAxis()
-        this.chartRender.renderAxisName()
-        this.chartRender.renderData()
+        this.rEmptyChart.renderSvg()
+        this.rEmptyChart.renderGContainers()
+        this.rEmptyChart.renderAxis()
+        this.rEmptyChart.renderAxisName()
+        this.rDataLinesDots.renderLinesAndDotsData()
         if(this.chartSettings.settings.selectRange) this.addBrush()
         if(this.chartSettings.settings.cursor) this.addCursor()
         if(this.chartSettings.settings.zoom) this.addZoom()
     }
 
-  updateChart(chartData?: (ILine | IDot)[], chartSize?: {width: number, height: number}) { 
+  updateChart(chartData?: (Line | Dot)[], chartSize?: {width: number, height: number}) { 
       if(chartSize) {
         this.chartSettings.settings.width = chartSize.width
         this.chartSettings.settings.height = chartSize.height
@@ -91,11 +93,11 @@ export class ChartSetupService {
       this.chartSettings.svg?.selectAll('g.axis')?.selectAll('g').remove()
       this.chartSettings.svg?.selectAll('defs')?.remove()
   
-      this.chartRender.renderSvg()
-      this.chartRender.renderAxis()
-      this.chartRender.renderAxisName()
+      this.rEmptyChart.renderSvg()
+      this.rEmptyChart.renderAxis()
+      this.rEmptyChart.renderAxisName()
       //if in zoom, no new data will be rendered (re-render when zoom stops)
-      if(!this.chartSettings.inZoom) this.chartRender.renderData()
+      if(!this.chartSettings.inZoom) this.rDataLinesDots.renderLinesAndDotsData()
   }
 
   private addBrush() {
@@ -203,7 +205,7 @@ export class ChartSetupService {
         this.chartSettings.svg.selectAll('g.zoom').selectAll('rect.zoom-overlay').remove()
         this.addZoom()
         //render chart with current data
-        this.chartRender.renderData()
+        this.rDataLinesDots.renderLinesAndDotsData()
       })
   
       this.chartSettings.svg.selectAll('g.zoom')
@@ -220,8 +222,8 @@ export class ChartSetupService {
   private addCursor() {
     this.chartSettings.svg
       .on('mousemove', (e) => {
-        this.chartRender.renderCursor(e.offsetX, e.offsetY)
-        this.chartRender.renderCursorPosition(e.offsetX, e.offsetY)
+        this.rEmptyChart.renderCursor(e.offsetX, e.offsetY)
+        this.rEmptyChart.renderCursorPosition(e.offsetX, e.offsetY)
       })
       .on('mouseleave', () => {
         this.chartSettings.svg.selectAll('g.cursor').selectAll('line').remove()
