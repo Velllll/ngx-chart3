@@ -3,20 +3,21 @@ import { GuardsService } from './services/type-guards.service';
 import { ChartSettingsService } from './services/chart-settings.service';
 import { ChartUtilsService } from './services/chart-utils.service';
 import { ChartSetupService } from './services/chart-setup.service';
-import { Margins, AxisName } from './interfaces/chart-settings.interface';
+import { Margins, AxisName } from '../../interfaces/chart-settings.interface';
 import { RenderEmptyChart } from './services/render/render-empty-chart.service';
 import { RenderDataService } from './services/render/render-data.service';
-import { Dot, Line } from './interfaces/lines-and-dots-data.interface';
+import { Dot, Line } from '../../interfaces/mix-data.interface';
+import { UtilsService } from '../../services/utils.service';
 
 @Component({
-  selector: 'chart3-mix',
+  selector: 'mixed-chart3',
   templateUrl: './mix-chart.component.html',
   styleUrls: ['./mix-chart.component.scss'],
   providers: [GuardsService, ChartSettingsService, ChartUtilsService, ChartSetupService, RenderDataService, RenderEmptyChart],
 })
-export class Chart3MixComponent implements OnChanges, AfterViewInit {
+export class MixChart3Component implements OnChanges, AfterViewInit {
   @Input('chartData') chartData: (Line | Dot)[] = []
-  @Input('svgId') svgId: string = this.getRandomId(10)
+  @Input('svgId') svgId: string = this.utils.getRandomId(10)
   @Input('fontSize') fontSize: number = 15
   @Input('width') width: number = 600
   @Input('height') height: number = 400
@@ -30,6 +31,7 @@ export class Chart3MixComponent implements OnChanges, AfterViewInit {
 
   constructor(
     private chartSetup: ChartSetupService,
+    private utils: UtilsService
   ) { }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -61,14 +63,6 @@ export class Chart3MixComponent implements OnChanges, AfterViewInit {
     })
   }
 
-  getRandomId(length: number): string {
-    let result = '';
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-    const charactersLength = characters.length;
-    for (let i = 0; i < length; i++) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return result;
-  }
+  
 
 }

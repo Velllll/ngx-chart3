@@ -1,4 +1,5 @@
-import { Line, Dot } from "./lines-and-dots-data.interface";
+import { BarData } from "./bar-data.interface";
+import { Line, Dot } from "./mix-data.interface";
 
 export interface Margins {
     left: number;
@@ -13,20 +14,25 @@ export interface AxisName {
 }
 
 export interface BasicChartSettings {
-    chartData: (Line | Dot)[];
     svgId: string;
     fontSize?: number;
     width?: number;
     height?: number;
     margins?: Margins;
-    axisName?: AxisName;
-    gridSize?: number;
-    range?: {x: number[], y: number[]}
 }
 
-export interface ChartSettings extends BasicChartSettings {
+export interface BarChartSettings extends BasicChartSettings {
+    chartData: BarData[],
+    rotate?: number,
+}
+
+export interface MixChartSettings extends BasicChartSettings {
+    chartData: (Line | Dot)[];
     selectRange?: boolean;
     zoom?: boolean;
     cursor?: boolean;
     lineHandlers?: boolean;
+    gridSize?: number;
+    range?: {x: number[], y: number[]};
+    axisName?: AxisName;
 }

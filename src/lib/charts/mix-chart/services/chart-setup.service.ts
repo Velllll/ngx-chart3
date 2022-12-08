@@ -2,8 +2,8 @@ import { Injectable } from "@angular/core";
 import { ChartSettingsService } from "./chart-settings.service";
 import { ChartUtilsService } from "./chart-utils.service";
 import * as d3 from "d3";
-import { Line, Dot } from "../interfaces/lines-and-dots-data.interface";
-import { ChartSettings } from "../interfaces/chart-settings.interface";
+import { Line, Dot } from "../../../interfaces/mix-data.interface";
+import { MixChartSettings } from "../../../interfaces/chart-settings.interface";
 import { RenderEmptyChart } from "./render/render-empty-chart.service";
 import { RenderDataService } from "./render/render-data.service";
 
@@ -32,7 +32,7 @@ export class ChartSetupService {
         lineHandlers = true, 
         axisName = {x: '', y: ''},
         gridSize = 6
-      }: ChartSettings
+      }: MixChartSettings
     ) {
       this.chartSettings.settings = {
         chartData,

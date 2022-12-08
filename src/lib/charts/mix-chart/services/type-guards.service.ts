@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Line, Dot } from "../interfaces/lines-and-dots-data.interface";
+import { Line, Dot } from "../../../interfaces/mix-data.interface";
 
 @Injectable()
 export class GuardsService {

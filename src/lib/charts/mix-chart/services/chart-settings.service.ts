@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Subject } from "rxjs";
-import { Line, Dot } from "../interfaces/lines-and-dots-data.interface";
-import { Margins, AxisName } from "../interfaces/chart-settings.interface";
+import { Line, Dot } from "../../../interfaces/mix-data.interface";
+import { Margins, AxisName } from "../../../interfaces/chart-settings.interface";
 import * as d3 from 'd3'
 
 @Injectable()
