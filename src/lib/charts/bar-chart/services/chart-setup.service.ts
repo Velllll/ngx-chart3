@@ -3,13 +3,15 @@ import { BarData } from '../../../interfaces/bar-data.interface';
 import { BarChartSettings } from '../../../interfaces/chart-settings.interface';
 import { ChartSettingsService } from './chart-settings.service';
 import { RenderChartBaseService } from './render/render-chart-base.service';
+import { RenderDataService } from './render/render-data.service';
 
 @Injectable()
 export class ChartSetupService {
 
   constructor(
     private chartSettings: ChartSettingsService,
-    private renderChartBase: RenderChartBaseService
+    private renderChartBase: RenderChartBaseService,
+    private renderData: RenderDataService
   ) { }
 
   setChart(
@@ -39,9 +41,10 @@ export class ChartSetupService {
   renderChart() {
     this.renderChartBase.renderSvg()
     this.renderChartBase.renderAxis()
+    this.renderData.renderData()
   }
 
   updateChart(chartData: BarData[], width: number, height: number) {
-    
+
   }
 }

@@ -19,27 +19,26 @@ export class RenderChartBaseService {
   }
 
   renderAxis() {
-    const x = d3.scaleBand()
+    const range = this.sort.getChartRange()
+    this.chartSettings.x = d3.scaleBand()
       .range([this.chartSettings.settings.margins.left, this.chartSettings.settings.width - this.chartSettings.settings.margins.right])
       .domain(this.chartSettings.settings.chartData.map(i => i.lable))
-      .padding(0.2)
+      .padding(0.1)
 
-    const y = d3.scaleLinear()
-      .domain([0, this.sort.getChartRange()])
+      this.chartSettings.y = d3.scaleLinear()
+      .domain([0, Math.ceil(range * 1.1)])
       .range([ this.chartSettings.settings.height - this.chartSettings.settings.margins.bottom, this.chartSettings.settings.margins.top]);
 
     this.chartSettings.svg.append("g")
       .attr('class', 'y-axis')
       .attr('transform', `translate(${this.chartSettings.settings.margins.left}, 0)`)
       .style('font-size', this.chartSettings.settings.fontSize)
-      .call(d3.axisLeft(y))
+      .call(d3.axisLeft(this.chartSettings.y))
 
     this.chartSettings.svg.append('g')
       .attr('class', 'x-axis')
       .attr("transform", "translate(0," + (this.chartSettings.settings.height - this.chartSettings.settings.margins.bottom) + ")")
-      .call(d3.axisBottom(x))
-
-    
+      .call(d3.axisBottom(this.chartSettings.x))
     
     if(this.chartSettings.settings.rotate) {
       this.chartSettings.svg.selectAll('g.x-axis')

@@ -7,6 +7,10 @@ export class ChartSettingsService {
 
   svg!: d3.Selection<d3.BaseType, unknown, HTMLElement, any>
 
+  x!: any
+
+  y!: d3.ScaleLinear<number, number, never>
+
   settings!: {
     chartData: BarData[];
     svgId: string;
