@@ -59,14 +59,11 @@ export class ChartSetupService {
     if(height) {
       this.chartSettings.settings.height = height
     }
-    this.clearChart()
-    this.renderChartBase.renderAxis()
-    this.renderData.renderData()
+    this.clearChartSvg()
+    this.renderChart()
   }
 
-  private clearChart() {
-    this.chartSettings.svg.selectAll('g.bar-data').selectAll('rect').remove()
-    this.chartSettings.svg.selectAll('g.x-axis').remove()
-    this.chartSettings.svg.selectAll('g.y-axis').remove()
+  private clearChartSvg() {
+    this.chartSettings.svg.selectAll('g').remove()
   }
 }
