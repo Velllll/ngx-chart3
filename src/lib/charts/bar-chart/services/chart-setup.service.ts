@@ -4,6 +4,7 @@ import { BarChartSettings } from '../../../interfaces/chart-settings.interface';
 import { ChartSettingsService } from './chart-settings.service';
 import { RenderChartBaseService } from './render/render-chart-base.service';
 import { RenderDataService } from './render/render-data.service';
+import * as d3 from 'd3'
 
 @Injectable()
 export class ChartSetupService {
@@ -49,6 +50,23 @@ export class ChartSetupService {
   }
 
   updateChart(chartData: BarData[], width: number, height: number) {
+    if(chartData.length) {
+      this.chartSettings.settings.chartData = chartData
+    }
+    if(width) {
+      this.chartSettings.settings.width = width
+    }
+    if(height) {
+      this.chartSettings.settings.height = height
+    }
+    this.clearChart()
+    this.renderChartBase.renderAxis()
+    this.renderData.renderData()
+  }
 
+  private clearChart() {
+    this.chartSettings.svg.selectAll('g.bar-data').selectAll('rect').remove()
+    this.chartSettings.svg.selectAll('g.x-axis').remove()
+    this.chartSettings.svg.selectAll('g.y-axis').remove()
   }
 }

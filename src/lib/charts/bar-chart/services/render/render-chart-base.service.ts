@@ -54,11 +54,11 @@ export class RenderChartBaseService {
 
   renderAxisName() {
     const fontSize = 20
-    this.chartSettings.svg.selectAll('g.x-axis')
+    this.chartSettings.svg
     .append('g')
     .attr('class', 'x-axis-name')
 
-    this.chartSettings.svg.selectAll('g.y-axis')
+    this.chartSettings.svg
     .append('g')
     .attr('class', 'y-axis-name')
 
@@ -66,7 +66,7 @@ export class RenderChartBaseService {
     .append('text')
     .text(this.chartSettings.settings.axisName.x)
     .attr('x', (this.chartSettings.settings.width - this.chartSettings.settings.margins.left - this.chartSettings.settings.margins.right) / 2 + this.chartSettings.settings.margins.left - 10 * this.chartSettings.settings.axisName.x.length / 2)
-    .attr('y', this.chartSettings.settings.margins.bottom - 5)
+    .attr('y', this.chartSettings.settings.height - 5)
     .attr('font-size', fontSize)
     .attr('fill', 'black')
     .style('font-family', "Helvetica Neue")
@@ -76,7 +76,7 @@ export class RenderChartBaseService {
     .append('text')
     .text(this.chartSettings.settings.axisName.y)
     .attr('x', (this.chartSettings.settings.height - this.chartSettings.settings.margins.bottom) / -2 - this.chartSettings.settings.axisName.y.length / 2 * 10)
-    .attr('y', this.chartSettings.settings.fontSize - this.chartSettings.settings.margins.left)
+    .attr('y', fontSize)
     .attr('font-size', fontSize)
     .attr('fill', 'black')
     .style('font-family', "Helvetica Neue")

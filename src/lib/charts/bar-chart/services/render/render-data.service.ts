@@ -24,10 +24,10 @@ export class RenderDataService {
 
   private renderRectWithOneColor(bar: BarData) {
     this.chartSettings.svg.selectAll('g.bar-data')
-      .selectAll('rect.' + bar.lable)
+      .selectAll('rect.' + 'd' +bar.lable.replace(/\./g, ''))
       .data([bar])
       .join('rect')
-      .attr('class', bar.lable)
+      .attr('class', 'd' + bar.lable.replace(/\./g, ''))
       .attr("x", d => this.chartSettings.x(d.lable))
       .attr("y", d => this.chartSettings.y(d.y))
       .attr("width", this.chartSettings.x.bandwidth())
@@ -39,10 +39,10 @@ export class RenderDataService {
     const rectData = this.getColorsParams(bar)
     rectData.forEach((i, idx) => {
       this.chartSettings.svg.selectAll('g.bar-data')
-      .selectAll('rect.' + bar.lable + idx)
+      .selectAll('rect.' + 'd' + bar.lable.replace(/\./g, '') + idx)
       .data([i])
       .join('rect')
-      .attr('class', bar.lable + idx)
+      .attr('class', 'd' + bar.lable.replace(/\./g, '') + idx)
       .attr("x", d => this.chartSettings.x(d.lable))
       .attr("y", d => this.chartSettings.y(d.y))
       .attr("width", this.chartSettings.x.bandwidth())
@@ -51,8 +51,12 @@ export class RenderDataService {
     })
   }
 
-  getColorsParams(bar: BarData) {
-    const colorsData = bar.colors!.reverse()
+  private getColorsParams(bar: BarData) {
+    let colors: [string, number][] = []
+    if(bar.colors) {
+      colors = bar.colors
+    }
+    const colorsData = [...colors].reverse()
     const sortedColors: {lable: string, y: number, height: number, color: string}[] = []
     for (let i = 0; i < colorsData.length; i++) {
       sortedColors.push({

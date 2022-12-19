@@ -32,6 +32,9 @@ export class BarChartComponent implements AfterViewInit, OnChanges {
   ) {}
   
   ngOnChanges(changes: SimpleChanges): void {
+    if(!changes['chartData']?.firstChange && changes['chartData']?.currentValue) {
+      this.setup.updateChart(this.chartData, this.width, this.height)
+    }
     
   }
 
