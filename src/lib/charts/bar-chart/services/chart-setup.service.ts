@@ -34,7 +34,6 @@ export class ChartSetupService {
       margins, 
       rotate,
     }
-    console.log(chartData)
     this.renderChart()
   }
 

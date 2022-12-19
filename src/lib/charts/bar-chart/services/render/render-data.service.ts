@@ -1,22 +1,73 @@
 import { Injectable } from "@angular/core";
+import { BarData } from "projects/ngx-chart3/src/lib/interfaces/bar-data.interface";
 import { ChartSettingsService } from "../chart-settings.service";
-
+import { SortService } from "../sort.service";
+import * as d3 from 'd3'
 @Injectable()
 export class RenderDataService {
+
   constructor(
-    private chartSettings: ChartSettingsService
+    private chartSettings: ChartSettingsService,
+    private sort: SortService,
   ) {}
 
-  renderData() {
-    this.chartSettings.svg.append('g')
-      .attr('class', 'chart-data')
-      .selectAll('rect')
-      .data(this.chartSettings.settings.chartData)
+  renderData() { 
+    this.addContainerForDataIfNotExist()
+    this.chartSettings.settings.chartData.forEach(i => {
+      if(i.color) {
+        this.renderRectWithOneColor(i)
+      } else {
+        this.renderRectWithMultCulor(i)
+      }
+    })
+  }
+
+  private renderRectWithOneColor(bar: BarData) {
+    this.chartSettings.svg.selectAll('g.bar-data')
+      .selectAll('rect.' + bar.lable)
+      .data([bar])
       .join('rect')
-        .attr('y', d => this.chartSettings.y(d.y))
-        .attr('x', d => this.chartSettings.x(d.lable))
-        .attr("width", this.chartSettings.x.bandwidth())
-        .attr("height", d => this.chartSettings.settings.height - this.chartSettings.settings.margins.bottom - this.chartSettings.y(d.y))
-        .attr("fill", "#69b3a2")
+      .attr('class', bar.lable)
+      .attr("x", d => this.chartSettings.x(d.lable))
+      .attr("y", d => this.chartSettings.y(d.y))
+      .attr("width", this.chartSettings.x.bandwidth())
+      .attr("height", d => this.chartSettings.settings.height - this.chartSettings.settings.margins.bottom - this.chartSettings.y(d.y))
+      .attr("fill", d => d.color as string)
+  }
+
+  private renderRectWithMultCulor(bar: BarData) {
+    const rectData = this.getColorsParams(bar)
+    rectData.forEach((i, idx) => {
+      this.chartSettings.svg.selectAll('g.bar-data')
+      .selectAll('rect.' + bar.lable + idx)
+      .data([i])
+      .join('rect')
+      .attr('class', bar.lable + idx)
+      .attr("x", d => this.chartSettings.x(d.lable))
+      .attr("y", d => this.chartSettings.y(d.y))
+      .attr("width", this.chartSettings.x.bandwidth())
+      .attr("height", d => this.chartSettings.settings.height - this.chartSettings.settings.margins.bottom - this.chartSettings.y(d.height))
+      .attr("fill", d => d.color)
+    })
+  }
+
+  getColorsParams(bar: BarData) {
+    const colorsData = bar.colors!.reverse()
+    const sortedColors: {lable: string, y: number, height: number, color: string}[] = []
+    for (let i = 0; i < colorsData.length; i++) {
+      sortedColors.push({
+        lable: bar.lable,
+        y: !i ? colorsData[i][1] / 100 * bar.y : colorsData[i][1] / 100 * bar.y + sortedColors[i - 1]?.y,
+        height: bar.y * colorsData[i][1] / 100 ,
+        color: colorsData[i][0]
+      })
+    }
+    return sortedColors
+  }
+
+  private addContainerForDataIfNotExist() {
+    if(!this.chartSettings.svg.selectAll('.bar-data').size()) {
+      this.chartSettings.svg.append('g').attr('class', 'bar-data')
+    }
   }
 }
