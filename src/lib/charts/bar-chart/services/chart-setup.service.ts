@@ -4,7 +4,6 @@ import { BarChartSettings } from '../../../interfaces/chart-settings.interface';
 import { ChartSettingsService } from './chart-settings.service';
 import { RenderChartBaseService } from './render/render-chart-base.service';
 import { RenderDataService } from './render/render-data.service';
-import { AddZoomService } from './add-zoom.service';
 
 @Injectable()
 export class ChartSetupService {
@@ -13,7 +12,6 @@ export class ChartSetupService {
     private chartSettings: ChartSettingsService,
     private renderChartBase: RenderChartBaseService,
     private renderData: RenderDataService,
-    private zoom: AddZoomService
   ) { }
 
   setChart(
@@ -23,7 +21,7 @@ export class ChartSetupService {
       fontSize = 15,
       width = 600, 
       height = 400, 
-      margins = {left: 40, right: 30, bottom: 30, top: 30}, 
+      margins = {left: 40, right: 30, bottom: 30, top: 30},
       rotate = 45,
       barPadding = 0.1,
       axisName = {x: '', y: ''}
