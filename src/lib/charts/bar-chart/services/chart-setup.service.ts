@@ -4,7 +4,7 @@ import { BarChartSettings } from '../../../interfaces/chart-settings.interface';
 import { ChartSettingsService } from './chart-settings.service';
 import { RenderChartBaseService } from './render/render-chart-base.service';
 import { RenderDataService } from './render/render-data.service';
-import * as d3 from 'd3'
+import { AddZoomService } from './add-zoom.service';
 
 @Injectable()
 export class ChartSetupService {
@@ -12,7 +12,8 @@ export class ChartSetupService {
   constructor(
     private chartSettings: ChartSettingsService,
     private renderChartBase: RenderChartBaseService,
-    private renderData: RenderDataService
+    private renderData: RenderDataService,
+    private zoom: AddZoomService
   ) { }
 
   setChart(

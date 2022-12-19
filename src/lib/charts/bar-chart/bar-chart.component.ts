@@ -7,12 +7,13 @@ import { ChartSetupService } from './services/chart-setup.service';
 import { RenderChartBaseService } from './services/render/render-chart-base.service';
 import { SortService } from './services/sort.service';
 import { RenderDataService } from './services/render/render-data.service';
+import { AddZoomService } from './services/add-zoom.service';
 
 @Component({
   selector: 'bar-chart3',
   templateUrl: './bar-chart.component.html',
   styleUrls: ['./bar-chart.component.scss'],
-  providers: [ChartSettingsService, ChartSetupService, RenderChartBaseService, SortService, RenderDataService]
+  providers: [ChartSettingsService, ChartSetupService, RenderChartBaseService, SortService, RenderDataService, AddZoomService]
 })
 export class BarChartComponent implements AfterViewInit, OnChanges {
   @Input('chartData') chartData: BarData[] = []
