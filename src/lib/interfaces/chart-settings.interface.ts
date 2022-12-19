@@ -24,6 +24,8 @@ export interface BasicChartSettings {
 export interface BarChartSettings extends BasicChartSettings {
     chartData: BarData[],
     rotate?: number,
+    barPadding: number,
+    axisName?: AxisName;
 }
 
 export interface MixChartSettings extends BasicChartSettings {

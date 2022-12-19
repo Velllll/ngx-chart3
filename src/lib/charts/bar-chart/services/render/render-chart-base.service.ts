@@ -23,7 +23,7 @@ export class RenderChartBaseService {
     this.chartSettings.x = d3.scaleBand()
       .range([this.chartSettings.settings.margins.left, this.chartSettings.settings.width - this.chartSettings.settings.margins.right])
       .domain(this.chartSettings.settings.chartData.map(i => i.lable))
-      .padding(0.1)
+      .padding(this.chartSettings.settings.barPadding)
 
       this.chartSettings.y = d3.scaleLinear()
       .domain([0, Math.ceil(range * 1.1)])
@@ -51,4 +51,34 @@ export class RenderChartBaseService {
       .selectAll('text')
       .attr('font-size', this.chartSettings.settings.fontSize)
   }
+
+  renderAxisName() {
+    const fontSize = 20
+    this.chartSettings.svg.selectAll('g.x-axis')
+    .append('g')
+    .attr('class', 'x-axis-name')
+
+    this.chartSettings.svg.selectAll('g.y-axis')
+    .append('g')
+    .attr('class', 'y-axis-name')
+
+    this.chartSettings.svg.selectAll('g.x-axis-name')
+    .append('text')
+    .text(this.chartSettings.settings.axisName.x)
+    .attr('x', (this.chartSettings.settings.width - this.chartSettings.settings.margins.left - this.chartSettings.settings.margins.right) / 2 + this.chartSettings.settings.margins.left - 10 * this.chartSettings.settings.axisName.x.length / 2)
+    .attr('y', this.chartSettings.settings.margins.bottom - 5)
+    .attr('font-size', fontSize)
+    .attr('fill', 'black')
+    .style('font-family', "Helvetica Neue")
+
+    this.chartSettings.svg.selectAll('g.y-axis-name')
+    .style('transform', 'rotate(-90deg)')
+    .append('text')
+    .text(this.chartSettings.settings.axisName.y)
+    .attr('x', (this.chartSettings.settings.height - this.chartSettings.settings.margins.bottom) / -2 - this.chartSettings.settings.axisName.y.length / 2 * 10)
+    .attr('y', this.chartSettings.settings.fontSize - this.chartSettings.settings.margins.left)
+    .attr('font-size', fontSize)
+    .attr('fill', 'black')
+    .style('font-family', "Helvetica Neue")
+}
 }

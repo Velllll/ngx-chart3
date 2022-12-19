@@ -22,7 +22,9 @@ export class ChartSetupService {
       width = 600, 
       height = 400, 
       margins = {left: 40, right: 30, bottom: 30, top: 30}, 
-      rotate = 45
+      rotate = 45,
+      barPadding = 0.1,
+      axisName = {x: '', y: ''}
     }: BarChartSettings
   ) {
     this.chartSettings.settings = {
@@ -33,6 +35,8 @@ export class ChartSetupService {
       height,
       margins, 
       rotate,
+      barPadding,
+      axisName
     }
     this.renderChart()
   }
@@ -40,6 +44,7 @@ export class ChartSetupService {
   renderChart() {
     this.renderChartBase.renderSvg()
     this.renderChartBase.renderAxis()
+    this.renderChartBase.renderAxisName()
     this.renderData.renderData()
   }
 

@@ -1,6 +1,6 @@
 import { Injectable, OnInit } from '@angular/core';
 import { BarData } from '../../../interfaces/bar-data.interface';
-import { Margins } from '../../../interfaces/chart-settings.interface';
+import { AxisName, Margins } from '../../../interfaces/chart-settings.interface';
 
 @Injectable()
 export class ChartSettingsService {
@@ -19,6 +19,8 @@ export class ChartSettingsService {
     height: number;
     margins: Margins;
     rotate: number;
+    barPadding: number,
+    axisName: AxisName
   }
 
   constructor() { }

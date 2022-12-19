@@ -26,7 +26,6 @@ export class RenderDataService {
       })
       .style('stroke-opacity', d => d.opacity !== undefined ? d.opacity : this.chartSettings.defaultSettingsForLine.opacity)
     
-    console.log(this.chartSettings.svg.selectAll('g.lines').selectAll('path').size())
     //render all dots
     this.chartSettings.svg.selectAll('g.dots')
       .selectAll('circle')

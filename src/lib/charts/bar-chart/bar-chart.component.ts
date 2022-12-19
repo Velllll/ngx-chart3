@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { UtilsService } from '../../services/utils.service';
-import { Margins } from '../../interfaces/chart-settings.interface';
+import { AxisName, Margins } from '../../interfaces/chart-settings.interface';
 import { BarData } from '../../interfaces/bar-data.interface';
 import { ChartSettingsService } from './services/chart-settings.service';
 import { ChartSetupService } from './services/chart-setup.service';
@@ -23,6 +23,8 @@ export class BarChartComponent implements AfterViewInit, OnChanges {
   @Input('selectRange') selectRange: boolean = false
   @Input('fontSize') fontSize: number = 12
   @Input('rotate') rotate: number = 0
+  @Input('barPadding') barPadding: number = 0.1
+  @Input('axisName') axisName: AxisName = {x: '', y: ''}
 
   constructor(
     private utils: UtilsService,
@@ -41,7 +43,9 @@ export class BarChartComponent implements AfterViewInit, OnChanges {
       width: this.width, 
       height: this.height, 
       margins: this.margins,
-      rotate: this.rotate
+      rotate: this.rotate,
+      barPadding: this.barPadding,
+      axisName: this.axisName
     })
   }
 
