@@ -24,10 +24,10 @@ export class RenderDataService {
 
   private renderRectWithOneColor(bar: BarData) {
     this.chartSettings.svg.selectAll('g.bar-data')
-      .selectAll('rect.' + 'd' +bar.lable.replace(/\./g, ''))
+      .selectAll('rect.' + this.getBarId(bar.lable))
       .data([bar])
       .join('rect')
-      .attr('class', 'd' + bar.lable.replace(/\./g, ''))
+      .attr('class', this.getBarId(bar.lable))
       .attr("x", d => this.chartSettings.x(d.lable))
       .attr("y", d => this.chartSettings.y(d.y))
       .attr("width", this.chartSettings.x.bandwidth())
@@ -39,10 +39,10 @@ export class RenderDataService {
     const rectData = this.getColorsParams(bar)
     rectData.forEach((i, idx) => {
       this.chartSettings.svg.selectAll('g.bar-data')
-      .selectAll('rect.' + 'd' + bar.lable.replace(/\./g, '') + idx)
+      .selectAll('rect.' + this.getBarId(bar.lable, idx))
       .data([i])
       .join('rect')
-      .attr('class', 'd' + bar.lable.replace(/\./g, '') + idx)
+      .attr('class', this.getBarId(bar.lable, idx))
       .attr("x", d => this.chartSettings.x(d.lable))
       .attr("y", d => this.chartSettings.y(d.y))
       .attr("width", this.chartSettings.x.bandwidth())
@@ -69,9 +69,15 @@ export class RenderDataService {
     return sortedColors
   }
 
+  private getBarId(lable: string, idx: number = 0) {
+    return 'd' + lable.split(' ').join('').replace(/\./g, '') + idx
+  }
+
   private addContainerForDataIfNotExist() {
     if(!this.chartSettings.svg.selectAll('.bar-data').size()) {
       this.chartSettings.svg.append('g').attr('class', 'bar-data')
     }
   }
+
+  
 }
