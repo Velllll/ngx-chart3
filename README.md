@@ -1,6 +1,8 @@
 # Chart3 
 
-Library for build zoomable chart in angular app.
+Library for build charts in angular app.
+
+
 
 ## Demo 
 
@@ -53,6 +55,10 @@ Use async pipe for update chart data and chart size.
 ```
 
 <br>
+
+## Version 
+
+Work with angular 15 
 
 ## API Documentation
 
