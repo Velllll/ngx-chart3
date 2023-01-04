@@ -2,11 +2,9 @@
 
 Library for build charts in angular app.
 
-
-
 ## Demo 
 
-vercel: https://ng-chart3.vercel.app/
+vercel: https://chart3-demo.vercel.app/
 
 ## Installation
 
